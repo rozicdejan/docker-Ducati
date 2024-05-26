@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  duplicati:
+    image: duplicati/duplicati
+    container_name: duplicati
+    environment:
+      - PUID=0   # Change to your user ID
+      - PGID=0  # Change to your group ID
+      - TZ=Europe/Ljubljana   # Change to your timezone
+    volumes:
+      - duplicati-config:/config   # Configuration data
+      - duplicati-backups:/backups   # Backup storage
+      - /:/source   # The data you want to back up
+    ports:
+      - 8200:8200
+    networks:
+      - duplicati_net
+    restart: unless-stopped
+
+volumes:
+  duplicati-config:
+  duplicati-backups:
+
+networks:
+  duplicati_net:
+    driver: bridge
